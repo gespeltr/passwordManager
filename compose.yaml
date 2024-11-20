@@ -1,0 +1,30 @@
+services:
+  php:
+    container_name: php
+    build: .
+    ports:
+      -  "8000:8000"
+    volumes:
+      - ./web/:/var/www/html/
+
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    container_name: mariadb
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_DATABASE: passwordManagerDB
+
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mariadb
+    restart: always
